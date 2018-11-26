@@ -3,6 +3,8 @@
 #include <strings.h>
 #include <string.h>
 
+#include "dictionary.h"
+
 #define ALPHABET 26
 #define NOGUESS 0x00000000000000000000000000
 
@@ -13,8 +15,10 @@ typedef struct player {
 } player_t;
 
 int main() {
-  char * word = "choice";
+  char * word = NULL;
   player_t * player = (player_t *) malloc(sizeof(player_t));
+
+  word = get_word("dictionary.txt", 0);
 
   player->lives = 6;
   player->tries = 0;
@@ -23,7 +27,7 @@ int main() {
   printf("Welcome to the Hangman Game\n");
   printf("I have chosen a word for you: ");
 
-  char * display = malloc(sizeof(char)*(2*strlen(word) + 2));
+  char * display = malloc(sizeof(char)*(2*strlen(word)-1));
   for (int i=0; i<strlen(word); i++) {
     display[2*i] = '_';
     if (i != strlen(word)-1) {
@@ -31,7 +35,7 @@ int main() {
     }
 
   }
-  display[2*strlen(word)+1] = '\0';
+  display[2*strlen(word)-1] = '\0';
 
   printf(" %s\n", display);
   printf("Guess a letter: ");

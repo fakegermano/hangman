@@ -1,17 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
+#include "dictionary.h"
 
-#define DICTIONARY_SIZE 1000
-#define MAX_WORD_SIZE 100
-
-int count_used_words(char file_name[]);
-void reset_dictionary(char file_name[]);
-char* get_dictionary_word(char file_name[], int number);
-
-int main() {
-    char *file_name = "dictionary.txt";
+char* get_word(char file_name[], int verbose){
     char *word = NULL;
     int used_words, number;
     time_t t;
@@ -21,30 +10,37 @@ int main() {
 
     /* Gets number of already chosen words, if it equals DICTIONARY_SIZE,
        reset dictionary */
-    printf("Counting already used words...\n");
     used_words = count_used_words(file_name);
-    printf("%d Already used words\n", used_words);
+    if(verbose){
+        printf("%d Already used words\n", used_words);
+    }
 
     /* If all words have been used, reset the dictionary */
     if(used_words >= DICTIONARY_SIZE){
-        printf("All words already used, resetting dictionary...\n");
+        if(verbose){
+            printf("All words already used, resetting dictionary...\n");
+        }
         reset_dictionary(file_name);
-        printf("Dictionary reset!\n");
+        if(verbose){
+            printf("Dictionary reset!\n");
+        }
     }
 
     /* While a valid word hasn't been chosen, choose another */
     while(!word) {
         number = rand() % DICTIONARY_SIZE;
-        printf("Randomly generated number: %d\n", number+1);
-        printf("Getting dictionary word...\n");
-        word = get_dictionary_word(file_name, number);
+        if(verbose){
+            printf("Randomly generated number: %d\n", number+1);
+            printf("Getting dictionary word...\n");
+        }
+        word = get_dictionary_word(file_name, number, verbose);
     }
 
-    printf("Word chosen: %s\n", word);
+    if(verbose){
+        printf("Word chosen: %s\n", word);
+    }
 
-    free(word);
-
-    return 0;
+    return word;
 }
 
 int count_used_words(char file_name[]){
@@ -96,7 +92,7 @@ void reset_dictionary(char file_name[]){
     return;
 }
 
-char* get_dictionary_word(char file_name[], int number){
+char* get_dictionary_word(char file_name[], int number, int verbose){
     char aux, *word;
     FILE *dict, *temp;
     int line = 0, word_size = 0;
@@ -110,10 +106,14 @@ char* get_dictionary_word(char file_name[], int number){
         if(line == number){
             while(aux != '\n') {
                 if(word_size == MAX_WORD_SIZE){
-                    printf("Word size exceeded\n");
+                    if(verbose){
+                        printf("Word size exceeded\n");
+                    }
                     return 0;
                 } else if (aux == '.') {
-                    printf("Word already used\n");
+                    if(verbose){
+                        printf("Word already used\n");
+                    }
                     return 0;
                 }
                 word[word_size] = aux;
