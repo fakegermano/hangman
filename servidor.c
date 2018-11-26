@@ -89,7 +89,7 @@ int main (int argc, char **argv) {
     }
     if((pid = fork()) == 0) {
       Close(listenfd);
-      const char * msg = "You are connected, choose a option?";
+      const char * msg = "Welcome to the Hangman Game! Choose an option\n-------\n1) Play Single-player mode \n2) Be hangman on next match\n3) Play Multi-player Mode\n";
       Send(connfd, msg, strlen(msg));
       char * buf = (char*) malloc(sizeof(char)*MAXDATASIZE);
       bzero(buf, MAXDATASIZE);
@@ -99,7 +99,16 @@ int main (int argc, char **argv) {
       } else {
         strncpy(buf, "INVALID", 8);
       }
-      printf("%s\n", buf);
+      if(!strcmp(buf,"1")){
+          printf("Starting single-player game...\n");
+//          StartHangmanGame();
+      } else if (!strcmp(buf,"2")) {
+          printf("Assigning hangman...\n");
+//          AssignHangman();
+      } else if (!strcmp(buf,"3")) {
+          printf("Starting multi-player game...\n");
+//          StartMultiplayerGame();
+      }
       Close(connfd);
       free(buf);
       exit(0);
