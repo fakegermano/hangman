@@ -21,18 +21,22 @@ int main() {
 
     /* Gets number of already chosen words, if it equals DICTIONARY_SIZE,
        reset dictionary */
+    printf("Counting already used words...\n");
     used_words = count_used_words(file_name);
     printf("%d Already used words\n", used_words);
 
     /* If all words have been used, reset the dictionary */
-    if(used_words >= DICTIONARY_SIZE - 1){
+    if(used_words >= DICTIONARY_SIZE){
+        printf("All words already used, resetting dictionary...\n");
         reset_dictionary(file_name);
+        printf("Dictionary reset!\n");
     }
 
     /* While a valid word hasn't been chosen, choose another */
     while(!word) {
-        number = rand() % 50;
-        printf("Randomly generated number: %d\n", number);
+        number = rand() % DICTIONARY_SIZE;
+        printf("Randomly generated number: %d\n", number+1);
+        printf("Getting dictionary word...\n");
         word = get_dictionary_word(file_name, number);
     }
 
@@ -77,7 +81,7 @@ void reset_dictionary(char file_name[]){
 
     while (fscanf(dict, "%s", aux) != EOF){
         if(strcmp(aux,".")){
-            fprintf(temp, "%s", aux);
+            fprintf(temp, "%s\n", aux);
         }
     }
 
@@ -103,7 +107,7 @@ char* get_dictionary_word(char file_name[], int number){
     temp = fopen("temp.txt", "w");
 
     while (fscanf(dict, "%c", &aux) != EOF){
-        if(line == number - 1){
+        if(line == number){
             while(aux != '\n') {
                 if(word_size == MAX_WORD_SIZE){
                     printf("Word size exceeded\n");
@@ -116,7 +120,6 @@ char* get_dictionary_word(char file_name[], int number){
                 word_size++;
                 fscanf(dict, "%c", &aux);
             }
-            word[word_size] = '\n';
         }
         if(aux == '\n'){
             line++;
@@ -128,13 +131,16 @@ char* get_dictionary_word(char file_name[], int number){
 
     while (fscanf(dict, "%c", &aux) != EOF){
         if(line == number){
-            while (fscanf(dict, "%c", &aux) != '\n') {
+            while(aux != '\n') {
                 fprintf(temp, "%c", aux);
+                fscanf(dict, "%c", &aux);
             }
             fprintf(temp, " .");
         }
         fprintf(temp, "%c", aux);
-        line++;
+        if(aux == '\n'){
+            line++;
+        }
     }
 
     fclose(dict);
