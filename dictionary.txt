@@ -35,7 +35,7 @@ alone
 along
 already
 also
-although
+although .
 always
 American
 among
@@ -50,7 +50,7 @@ anyone
 anything
 appear
 apply
-approach
+approach .
 area
 argue
 arm
@@ -212,7 +212,7 @@ defense
 degree
 Democrat
 democratic
-describe
+describe .
 design
 despite
 detail
@@ -289,13 +289,13 @@ face
 fact
 factor
 fail
-fall
+fall .
 family
 far
-fast
+fast .
 father
 fear
-federal
+federal .
 feel
 feeling
 few
@@ -440,7 +440,7 @@ kid
 kill
 kind
 kitchen
-know
+know .
 knowledge
 land
 language
@@ -448,7 +448,7 @@ large
 last
 late
 later
-laugh
+laugh .
 law
 lawyer
 lay
@@ -631,7 +631,7 @@ pick
 picture
 piece
 place
-plan
+plan .
 plant
 play
 player
@@ -682,7 +682,7 @@ quickly
 quite
 race
 radio
-raise
+raise .
 range
 rate
 rather
@@ -897,8 +897,8 @@ time
 to
 today
 together
-tonight
-too
+tonight .
+too .
 top
 total
 tough
@@ -964,14 +964,14 @@ which
 while
 white
 who
-whole
+whole .
 whom
 whose
 why
 wide
 wife
 will
-win
+win .
 wind
 window
 wish
