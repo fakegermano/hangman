@@ -801,7 +801,7 @@ someone
 something
 sometimes
 son
-song
+song .
 soon
 sort
 sound

@@ -93,7 +93,7 @@ int main (int argc, char **argv) {
       Send(connfd, msg, strlen(msg));
       char * buf = (char*) malloc(sizeof(char)*MAXDATASIZE);
       bzero(buf, MAXDATASIZE);
-      int n = Recieve(connfd, buf, MAXDATASIZE);
+      int n = receive(connfd, buf, MAXDATASIZE);
       if (n >= 0) {
         buf[n] = '\0';
       } else {
