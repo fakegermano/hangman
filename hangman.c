@@ -7,6 +7,7 @@
 
 #define ALPHABET 26
 #define NOGUESS 0x00000000000000000000000000
+#define clear() printf("\033[H\033[J")
 
 typedef struct player {
   int lives;
@@ -17,45 +18,66 @@ typedef struct player {
 void init_display(char * display, int n);
 int check_guess_and_update(char * display, char * word, player_t * player, char guess);
 int check_if_won(player_t * player, char * word);
+void print_ui(char * display, int lives, char * message, int won);
 
 int main() {
   char * word = NULL;
   player_t * player = (player_t *) malloc(sizeof(player_t));
-
-  word = get_word("../dictionary.txt", 0);
+  char * message = NULL;
+  word = get_word("dictionary.txt", 0);
 
   player->lives = 6;
   player->tries = 0;
   bzero(&player->guesses, 26);
 
-  printf("Welcome to the Hangman Game\n");
-  printf("I have chosen a word for you: ");
+  message = malloc(sizeof(char)*256);
+  bzero(message, 256);
+
   char * display = malloc(sizeof(char)*(2*strlen(word)-1));
   init_display(display, strlen(word));
   while ((player->tries <= player->lives-1) && !check_if_won(player, word)) {
-    printf("%s\n", display);
-    printf("(%d/%d) Guess a letter ([a-zA-Z]): ", player->tries, player->lives);
     char guess;
+    print_ui(display, player->lives - player->tries, message, 0);
     scanf("%c", &guess);
     if ((guess >= 'A' && guess <= 'Z') || (guess >= 'a' && guess <= 'z')) {
       int r = check_guess_and_update(display, word, player, guess);
+      bzero(message, 256);
       if (r == -1) {
-        printf("You already guessed that one\n");
+        sprintf(message, "You already guessed that one");
       } else {
         if (r == 0) {
-          printf("Letter not present in ");
+          sprintf(message, "Letter not present in %s", display);
         } else {
-          printf("You guessed right: ");
+          sprintf(message, "You guessed right: %s", display);
         }
       }
     }
   }
+  int won = 0;
   if (player->tries < player->lives) {
-    printf("YOU WON! THE WORD WAS: %s\n", display);
+    won = 1;
+    sprintf(message, "YOU WON! THE WORD WAS: %s\n", display);
   } else {
-    printf("SHAME, YOU LOST :(the word was: '%s')\n", word);
+    won = 0;
+    sprintf(message, "SHAME, YOU LOST :( [the word was: '%s']\n", word);
   }
+  print_ui(display, player->lives - player->tries, message, won);
   return 0;
+}
+
+void print_ui(char * display, int lives, char * message, int won) {
+  clear();
+  if (message[0] != '\0') {
+    printf("======================\n");
+    printf("THE HANGMAN SAYS: %s\n", message);
+    printf("======================\n");
+  }
+  if (lives > 0 && !won) {
+    printf("Welcome to the Hangman Game\n");
+    printf("The hangman has a word for you: ");
+    printf("%s\n", display);
+    printf("(%d) Guess a letter ([a-zA-Z]): ", lives);
+  }
 }
 
 void init_display(char * display, int n) {
@@ -70,7 +92,6 @@ void init_display(char * display, int n) {
 
 int check_guess_and_update(char * display, char * word, player_t * player, char guess) {
   int already = 0;
-  printf("You guessed: '%c'\n", guess);
   if (guess < 'a') {
     if (player->guesses[guess-'A'] == 1) {
       already = 1;
