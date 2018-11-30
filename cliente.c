@@ -34,7 +34,6 @@ int main(int argc, char **argv) {
   ip = argv[1];
   port = atoi(argv[2]);
 
-
   while(1) {
     sockfd = Socket(AF_INET, SOCK_STREAM, 0);
 
@@ -42,7 +41,7 @@ int main(int argc, char **argv) {
     Connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
     char *buf = (char*) malloc(sizeof(char)*MAXLINE);
     bzero(buf, MAXLINE);
-    int n = receive(sockfd, buf, MAXLINE);
+    int n = Recieve(sockfd, buf, MAXLINE);
     if (n >= 0) {
       buf[n] = '\0';
     } else {
