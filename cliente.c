@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
   ip = argv[1];
   port = atoi(argv[2]);
 
-  while (1) {
+  while(1) {
     sockfd = Socket(AF_INET, SOCK_STREAM, 0);
 
     servaddr = ClientSockaddrIn(AF_INET, ip, port);

@@ -28,5 +28,5 @@ struct sockaddr_in ClientSockaddrIn(int family, const char *ip, unsigned short p
 
 int Send(int sockfd, const void * buf, size_t len);
 
-int Recieve(int sockfd, void * buf, size_t len);
+int receive(int sockfd, void * buf, size_t len);
 #endif
