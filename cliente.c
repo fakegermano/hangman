@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
     Connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
     char *buf = (char*) malloc(sizeof(char)*MAXLINE);
     bzero(buf, MAXLINE);
-    int n = Recieve(sockfd, buf, MAXLINE);
+    int n = receive(sockfd, buf, MAXLINE);
     if (n >= 0) {
       buf[n] = '\0';
     } else {
