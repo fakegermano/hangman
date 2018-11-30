@@ -34,29 +34,30 @@ int main(int argc, char **argv) {
   ip = argv[1];
   port = atoi(argv[2]);
 
-  sockfd = Socket(AF_INET, SOCK_STREAM, 0);
+  while (1) {
+    sockfd = Socket(AF_INET, SOCK_STREAM, 0);
 
-  servaddr = ClientSockaddrIn(AF_INET, ip, port);
-
-  Connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
-  char *buf = (char*) malloc(sizeof(char)*MAXLINE);
-  bzero(buf, MAXLINE);
-  int n = Recieve(sockfd, buf, MAXLINE);
-  if (n >= 0) {
-    buf[n] = '\0';
-  } else {
-    strncpy(buf, "INVALID", 8);
+    servaddr = ClientSockaddrIn(AF_INET, ip, port);
+    Connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
+    char *buf = (char*) malloc(sizeof(char)*MAXLINE);
+    bzero(buf, MAXLINE);
+    int n = Recieve(sockfd, buf, MAXLINE);
+    if (n >= 0) {
+      buf[n] = '\0';
+    } else {
+      strncpy(buf, "INVALID", 8);
+    }
+    printf("%s\n", buf);
+    char opt[MAXLINE];
+    if (!fgets(opt, MAXLINE-1, stdin)) {
+      perror("fgets");
+      Send(sockfd, "", strlen(""));
+    } else {
+      opt[strcspn(opt, "\n")] = '\0';
+      Send(sockfd, opt, strlen(opt));
+    }
+    free(buf);
+    Close(sockfd);
   }
-  printf("%s\n", buf);
-  char opt[MAXLINE];
-  if (!fgets(opt, MAXLINE-1, stdin)) {
-    perror("fgets");
-    Send(sockfd, "", strlen(""));
-  } else {
-    opt[strcspn(opt, "\n")] = '\0';
-    Send(sockfd, opt, strlen(opt));
-  }
-  free(buf);
-  Close(sockfd);
   exit(0);
 }
