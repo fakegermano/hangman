@@ -18,7 +18,7 @@ typedef struct player {
 void init_display(char * display, int n);
 int check_guess_and_update(char * display, char * word, player_t * player, char guess);
 int check_if_won(player_t * player, char * word);
-void print_ui(char * display, int lives, char * message, int won);
+void print_ui(char * display, int lives, int * guesses, char * message, int won);
 
 int main() {
   char * word = NULL;
@@ -37,7 +37,7 @@ int main() {
   init_display(display, strlen(word));
   while ((player->tries <= player->lives-1) && !check_if_won(player, word)) {
     char guess;
-    print_ui(display, player->lives - player->tries, message, 0);
+    print_ui(display, player->lives - player->tries, player->guesses, message, 0);
     scanf("%c", &guess);
     if ((guess >= 'A' && guess <= 'Z') || (guess >= 'a' && guess <= 'z')) {
       int r = check_guess_and_update(display, word, player, guess);
@@ -56,27 +56,52 @@ int main() {
   int won = 0;
   if (player->tries < player->lives) {
     won = 1;
-    sprintf(message, "YOU WON! THE WORD WAS: %s\n", display);
+    sprintf(message, "YOU WON! THE WORD WAS: %s", display);
   } else {
     won = 0;
-    sprintf(message, "SHAME, YOU LOST :( [the word was: '%s']\n", word);
+    sprintf(message, "SHAME, YOU LOST :( [the word was: '%s']", word);
   }
-  print_ui(display, player->lives - player->tries, message, won);
+  print_ui(display, player->lives - player->tries, player->guesses, message, won);
   return 0;
 }
 
-void print_ui(char * display, int lives, char * message, int won) {
+void print_ui(char * display, int lives, int * guesses, char * message, int won) {
+  int i;
+  char alfabet = 'A';
   clear();
   if (message[0] != '\0') {
     printf("======================\n");
     printf("THE HANGMAN SAYS: %s\n", message);
     printf("======================\n");
+    if(lives && !won){
+      printf("+-----------------------------------+\n");
+      printf("|");
+      for(i = 0; i < 26; i++){
+        if(guesses[i]){
+          printf("(%c)|", alfabet);
+        } else {
+          printf(" %c |", alfabet);
+        }
+        alfabet++;
+        if((i+1)%9 == 0){
+          printf("\n");
+          printf("+-----------------------------------+\n|");
+        }
+      }
+      printf("   |\n");
+      printf("+-----------------------------------+\n");
+    }
   }
   if (lives > 0 && !won) {
     printf("Welcome to the Hangman Game\n");
     printf("The hangman has a word for you: ");
     printf("%s\n", display);
-    printf("(%d) Guess a letter ([a-zA-Z]): ", lives);
+    if(lives > 1){
+      printf("You have %d lifes remaining\n", lives);
+    } else if (lives == 1){
+      printf("BE CAREFUL! You only have %d life remaining\n", lives);
+    }
+    printf("Guess a letter ([a-zA-Z]): \n");
   }
 }
 

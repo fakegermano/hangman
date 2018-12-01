@@ -5,23 +5,20 @@ LIB_HEADER = socket_helper.h
 DICT_CODE = dictionary.c
 DICT_HEADER = dictionary.h
 
-all: cliente servidor hangman#cliente servidor
+all: folder client server hangman
 
-#cliente: cliente.c $(LIB_CODE) $(LIB_HEADER)
-#	gcc $(CFLAGS) cliente.c $(LIB_CODE) -o cliente
-#
-#servidor: servidor.c $(LIB_CODE) $(LIB_HEADER)
-#	gcc $(CFLAGS) servidor.c $(LIB_CODE) -o servidor
+folder:
+	mkdir -p build
 
-cliente: cliente.c $(LIB_CODE) $(LIB_HEADER)
-	gcc $(CFLAGS) cliente.c $(LIB_CODE) -o build/cliente
+client: client.c $(LIB_CODE) $(LIB_HEADER)
+	gcc $(CFLAGS) client.c $(LIB_CODE) -o build/client
 
-servidor: servidor.c $(LIB_CODE) $(LIB_HEADER)
-	gcc $(CFLAGS) servidor.c $(LIB_CODE) -o build/servidor
+server: server.c $(LIB_CODE) $(LIB_HEADER)
+	gcc $(CFLAGS) server.c $(LIB_CODE) $(DICT_CODE) -o build/server
 
 hangman: hangman.c $(DICT_CODE) $(DICT_HEADER)
 	gcc $(CFLAGS) hangman.c $(DICT_CODE) -o build/hangman
 
 .PHONY: clean
 clean:
-	rm -rf build/*
+	rm -rf build
