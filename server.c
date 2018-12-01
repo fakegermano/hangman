@@ -114,7 +114,7 @@ int main (int argc, char **argv) {
       int n;
 
       Close(listenfd);
-      response = "============================\nWelcome to the Hangman Game!\nPlease choose an option\n============================\n\n1) Play Single-player mode \n2) Be hangman on next match\n3) Play Multi-player Mode\n'-h' for our help menu";
+      response = "============================\nWelcome to the Hangman Game!\nPlease choose an option\n============================\n\n1) Play Single-player mode \n2) Be hangman on next match\n3) Play Multi-player Mode\n4) Exit at any time\n'-h' for our help menu";
       write(connfd, response, strlen(response));
 
       while((n = receive(connfd, buf, MAXDATASIZE))){
@@ -145,7 +145,7 @@ int main (int argc, char **argv) {
           response = "==========================\n        Game rules\n==========================\nAt the beggining of the game, a word is chosen by the Hangman.\nIt is your job to guess what is that word!\nYou will receive a fixed amount of tries and know how many letters the word has.\nYou can guess any letter of the alfabet.\nIf you guess a letter that is present in the word, you will play another round for free!\nThe hangman will also show you the place that the letter fits in the answer!\nIf you guess a wrong letter, the  hangman will charge you one of your tries, so be careful!\nIf you succeed in guessing the entire word before your tries run out, you win the game! :)\nBut, if you lose all your tries before guessing the entire word, you lose the game :(\n\nDeveloped with <3 by\nGiovani Garuffi Rondel\nDaniel Germano Travieso\n(Press '0' to go back to the Main Menu)\n";
           write(connfd, response, strlen(response));
         } else if (strcmp(buf,"0") == 0){
-          response = "============================\nWelcome to the Hangman Game!\nPlease choose an option\n============================\n\n1) Play Single-player mode \n2) Be hangman on next match\n3) Play Multi-player Mode\n'-h' for our help menu";
+          response = "============================\nWelcome to the Hangman Game!\nPlease choose an option\n============================\n\n1) Play Single-player mode \n2) Be hangman on next match\n3) Play Multi-player Mode\n4) Exit at any time\n'-h' for our help menu";
           game_on = 0;
           won = 0;
           write(connfd, response, strlen(response));
@@ -155,6 +155,11 @@ int main (int argc, char **argv) {
         } else if (strcmp(buf,"3") == 0 && !game_on && !won){
           response = "Not implemented yet!";
           write(connfd, response, strlen(response));
+        } else if (strcmp(buf, "4") == 0) {
+          printf("Client gave up!\n");
+          game_on = 0;
+          won = 0;
+          response = "EXITED";
         } else if (game_on && !won) {
           bzero(response, MAXDATASIZE);
           bzero(message, 256);

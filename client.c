@@ -48,13 +48,18 @@ int main(int argc, char **argv) {
       } else {
         strncpy(buf, "INVALID", 8);
       }
-      printf("%s\n", buf);
+      printf("\e[1;1H\e[2J%s\n", buf);
       char opt[MAXLINE];
       if (!fgets(opt, MAXLINE-1, stdin)) {
         perror("fgets");
         Send(sockfd, "", strlen(""));
       } else {
         opt[strcspn(opt, "\n")] = '\0';
+        if (strcmp(opt,"4") == 0) {
+          printf("Client exiting!\n");
+          Send(sockfd, opt, strlen(opt));
+          exit(0);
+        }
         Send(sockfd, opt, strlen(opt));
       }
     }
