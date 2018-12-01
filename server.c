@@ -28,8 +28,6 @@ typedef struct player {
 } player_t;
 
 typedef void sig_func(int);
-char * MessageToDisplay(char * received);
-char * start_game(char * word, player_t * player);
 void init_display(char * display, int n);
 int check_guess_and_update(char * display, char * word, player_t * player, char guess);
 int check_if_won(player_t * player, char * word);
