@@ -49,6 +49,14 @@ If you press `1` a new game will start. As soon as the game starts, the server a
 
 At present time the `2` and `3` options are not fully implemented yet.
 
+## Additional Comments
+
+The `dictionary.txt` contains all the words that are used in the game, you can change or update it the way you find more enjoyable!
+If you need to reset the dictionary so that all the words are available again, just run the following command on the main folder:
+```
+./reset_dictionary
+```
+
 ## Example screens
 ```
 ===========================
